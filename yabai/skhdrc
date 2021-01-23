@@ -1,0 +1,85 @@
+# opens iTerm2
+# cmd - space : "${HOME}"/.config/yabai/scripts/open_iterm2.sh
+cmd - space : /Applications/Alacritty.app/Contents/MacOS/alacritty
+
+# Navigation
+# Figure out how to navigate to second monitor
+cmd - h : yabai -m window --focus stack.prev ||yabai -m window --focus west || $(yabai -m display --focus 1)
+cmd - j : yabai -m window --focus south || $( yabai -m display --focus south;)
+cmd - k : yabai -m window --focus north || $(yabai -m display --focus north;)
+cmd - l : yabai -m window --focus stack.next ||yabai -m window --focus east || $(yabai -m display --focus 2)
+
+#Stacking
+cmd - s : yabai -m window --stack north || yabai -m window --stack south || yabai -m window --stack east || yabai -m window --stack west
+cmd - e : yabai -m window --toggle float
+
+# Moving windows
+shift + cmd - h : yabai -m window --warp west
+shift + cmd - j : yabai -m window --warp south
+shift + cmd - k : yabai -m window --warp north
+shift + cmd - l : yabai -m window --warp east
+
+# Closing
+shift + cmd - q : yabai -m window --close
+
+# Equalize size of windows
+alt - 0 : yabai -m space --balance
+
+# Float and center window
+shift + cmd - c : yabai -m window --toggle float;\
+                  yabai -m window --grid 4:4:1:1:2:2
+
+# Set insertion point for focused container
+# cmd + ctrl - h : yabai -m window --insert west
+# cmd + ctrl - j : yabai -m window --insert south
+# cmd + ctrl - k : yabai -m window --insert north
+# cmd + ctrl - l : yabai -m window --insert east
+
+# Float / Unfloat window (更换 layout 方式) w
+# shift + alt - space : yabai -m window --toggle float
+
+# Restart Yabai
+shift + cmd + alt - r :
+    /usr/bin/env osascript <<< \
+        "display notification \"Restarting Yabai\" with title \"Yabai\""; \
+    launchctl kickstart -k "gui/${UID}/homebrew.mxcl.yabai"
+
+# Make window native fullscreen
+shift + cmd - f         : yabai -m window --toggle zoom-fullscreen
+# shift + cmd - f : yabai -m window --toggle native-fullscreen
+
+# toggle window split type
+# alt - e : yabai -m window --toggle split
+
+# fast focus desktop (切换空间焦点)
+cmd - 1 : yabai -m space --focus 1
+cmd - 2 : yabai -m space --focus 2
+cmd- 3 : yabai -m space --focus 3
+cmd - 4 : yabai -m space --focus 4
+cmd - 5 : yabai -m space --focus 5
+cmd - y : yabai -m space --focus 6
+cmd - u : yabai -m space --focus 7
+cmd - i : yabai -m space --focus 8
+cmd - o : yabai -m space --focus 9
+cmd - p : yabai -m space --focus 10
+
+# create new space
+# ctrl - n : yabai -m space --create
+
+# send window to space
+cmd + shift - 1 : yabai -m window --space 1
+cmd + shift - 2 : yabai -m window --space 2
+cmd + shift - 3 : yabai -m window --space 3
+cmd + shift - 4 : yabai -m window --space 4
+cmd + shift - 5 : yabai -m window --space 5
+cmd + shift - y : yabai -m window --space 6
+cmd + shift - u : yabai -m window --space 7
+cmd + shift - i : yabai -m window --space 8
+cmd + shift - o : yabai -m window --space 9
+cmd + shift - p : yabai -m window --space 10
+
+alt + ctrl - f : yabai -m space --layout float && \
+                 yabai -m config window_border off
+alt + ctrl - b : yabai -m space --layout bsp && \
+                 yabai -m config window_border on
+
