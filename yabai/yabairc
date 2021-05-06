@@ -15,7 +15,7 @@ yabai -m config active_window_opacity        1.0
 yabai -m config normal_window_opacity        0.90
 yabai -m config window_border                on
 yabai -m config window_border_width          6
-yabai -m config active_window_border_color   0xffffa931
+yabai -m config active_window_border_color   0xff81a1c1
 yabai -m config normal_window_border_color   0xff505050
 yabai -m config insert_window_border_color   0xffd75f5f
 yabai -m config insert_feedback_color        0xaa7c5c9c
@@ -35,20 +35,25 @@ yabai -m config right_padding                10
 yabai -m config window_gap                   10
 
 # Rules
-yabai -m rule --add label=notion app="^Notion$" space=4
-yabai -m rule --add label=whatsapp app="^WhatsApp$" space=10
-yabai -m rule --add label=slack app="^Slack$" space=9
+yabai -m rule --add label=whatsapp app="^WhatsApp$" space=11
+yabai -m rule --add label=slack app="^Slack$" space=10
 yabai -m rule --add app="^(Calculator|VLC|System Preferences)$" manage=off
+yabai -m rule --add app=Emacs manage=on
 
-# signals
-yabai -m signal --add event=window_destroyed action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
-yabai -m signal --add event=application_terminated action="yabai -m query --windows --window &> /dev/null || yabai -m window --focus mouse"
-
-function focus_on_mouse {
- yabai -m window --focus mouse
+function record_display_id {
+  display_id=$(yabai -m query --windows --window | jq '.display')
+  ruby $HOME/display_focus.rb write $display_id
 }
 
-yabai -m signal --add event=space_changed action="${functions[focus_on_mouse]}"
+function focus_current_display {
+  yabai -m display --focus $(ruby $HOME/display_focus.rb read)
+  # display_id=$(yabai -m query --windows --window | jq '.display')
+  # yabai -m display --focus $display_id
+}
+
+yabai -m signal --add event=window_focused action="${functions[record_display_id]}"
+yabai -m signal --add event=application_front_switched action="${functions[record_display_id]}"
+yabai -m signal --add event=window_destroyed action="${functions[focus_current_display]}"
+yabai -m signal --add event=application_terminated action="${functions[focus_current_display]}"
 
 echo "yabai configuration loaded.."
-

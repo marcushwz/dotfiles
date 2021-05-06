@@ -1,6 +1,6 @@
 # opens iTerm2
-# cmd - space : "${HOME}"/.config/yabai/scripts/open_iterm2.sh
-cmd - space : /Applications/Alacritty.app/Contents/MacOS/alacritty
+cmd - space : "${HOME}"/.config/yabai/scripts/open_iterm2.sh
+# cmd - space : /Applications/Alacritty.app/Contents/MacOS/alacritty
 
 # Navigation
 # Figure out how to navigate to second monitor
@@ -10,8 +10,8 @@ cmd - k : yabai -m window --focus north || $(yabai -m display --focus north;)
 cmd - l : yabai -m window --focus stack.next ||yabai -m window --focus east || $(yabai -m display --focus 2)
 
 #Stacking
-cmd - s : yabai -m window --stack north || yabai -m window --stack south || yabai -m window --stack east || yabai -m window --stack west
-cmd - e : yabai -m window --toggle float
+# cmd - s : yabai -m window --stack north || yabai -m window --stack south || yabai -m window --stack east || yabai -m window --stack west
+# cmd - e : yabai -m window --toggle float
 
 # Moving windows
 shift + cmd - h : yabai -m window --warp west
